@@ -1,31 +1,67 @@
 import { Link, routes } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
+
 type BlogLayoutProps = {
   children?: React.ReactNode
 }
 
 const BlogLayout = ({ children }: BlogLayoutProps) => {
+  const { isAuthenticated, currentUser, logOut } = useAuth()
+
   return (
     <>
-      <header className="header">
-        <h1>
-          <Link to={routes.home()}>Redwood Blog</Link>
+      <header className="relative flex justify-between items-center py-4 px-8 bg-blue-700 text-white">
+        <h1 className="text-5xl font-semibold tracking-tight">
+          <Link
+            className="text-blue-400 hover:text-blue-100 transition duration-100"
+            to={routes.home()}
+          >
+            Redwood Blog
+          </Link>
         </h1>
         <nav>
-          <ul>
+          <ul className="relative flex items-center font-light">
             <li>
-              <Link to={routes.home()}>Home</Link>
+              <Link
+                className="py-2 px-4 hover:bg-blue-600 transition duration-100 rounded"
+                to={routes.about()}
+              >
+                About
+              </Link>
             </li>
             <li>
-              <Link to={routes.about()}>About</Link>
+              <Link
+                className="py-2 px-4 hover:bg-blue-600 transition duration-100 rounded"
+                to={routes.contact()}
+              >
+                Contact
+              </Link>
             </li>
             <li>
-              <Link to={routes.contact()}>Contact</Link>
+              {isAuthenticated ? (
+                <div>
+                  <button type="button" onClick={logOut} className="py-2 px-4">
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <Link to={routes.login()} className="py-2 px-4">
+                  Login
+                </Link>
+              )}
             </li>
           </ul>
+          {isAuthenticated && (
+            <div className="absolute bottom-1 right-0 mr-12 text-xs text-blue-300">
+              {currentUser?.email?.toString()}
+            </div>
+          )}
         </nav>
       </header>
-      <main>{children}</main>
+      <main className="max-w-4xl mx-auto p-12 bg-white shadow rounded-b">
+        {children}
+      </main>
     </>
   )
 }

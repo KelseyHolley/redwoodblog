@@ -1,4 +1,5 @@
-import { render } from '@redwoodjs/testing/web'
+import { render, screen } from '@redwoodjs/testing/web'
+
 import { Loading, Empty, Failure, Success } from './ArticleCell'
 import { standard } from './ArticleCell.mock'
 
@@ -33,9 +34,11 @@ describe('ArticleCell', () => {
   // 1. import { screen } from '@redwoodjs/testing/web'
   // 2. Add test: expect(screen.getByText('Hello, world')).toBeInTheDocument()
 
-  it('renders Success successfully', async () => {
-    expect(() => {
-      render(<Success article={standard().article} />)
-    }).not.toThrow()
+  test('Success renders successfully', async () => {
+    const article = standard().article
+    render(<Success article={article} />)
+
+    expect(screen.getByText(article.title)).toBeInTheDocument()
+    expect(screen.getByText(article.body)).toBeInTheDocument()
   })
 })
