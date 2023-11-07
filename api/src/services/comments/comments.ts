@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client'
-import type { QueryResolvers, CommentRelationResolvers } from 'types/graphql'
+import type { CommentRelationResolvers } from 'types/graphql'
 
 import { db } from 'src/lib/db'
 
